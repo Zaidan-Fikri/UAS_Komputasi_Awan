@@ -1,40 +1,9 @@
 FROM php:8.1-apache
 
-name: PHP Composer
+RUN apt-get update && apt-get install -y curl && rm -r /var/lib/apt/lists/*
 
-on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
-jobs:
+WORKDIR /var/wwww/html
 
-  composer_update:
-    name: Update Composer
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress
+COPY . .
 
-  push_to_registry:
-    name: Push Docker Images
-    runs-on: ubuntu-latest
-    needs: [composer_update]
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-
-    - name: Login to DockerHub
-      uses: docker/login-action@v1
-      with:
-        username: ${{ Secrets.DOCKER_USERNAME }}
-        password: ${{ Secrets.DOCKER_PASSWORD }}
-      
-    - name: Build and Push Docker Images
-      uses: docker/build-push-action@v2
-      with:
-        file: Dockerfile
-        push: true
-        tags: ${{ Secrets.DOCKER_USERNAME }}/aws-uas:latest
+EXPOSE 80
