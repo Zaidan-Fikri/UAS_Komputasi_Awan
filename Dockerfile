@@ -20,6 +20,6 @@ HEALTHCHECK --interval=5m --timeout=3s \
     CMD curl -f http://localhost:80 || exit 1
 
 # Build image
-# docker build -t nicoco1173/aws-bucket .
-# docker run -d -p 80:80 nicoco1173/aws-bucket
-# docker push nicoco1173/aws-bucket
+# docker build -t zaidanbucket/aws-bucket .
+# docker run -d -p 80:80 zaidanbucket/aws-bucket
+# docker push zaidanbucket/aws-bucket
